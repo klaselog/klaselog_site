@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KlaseLog, Grade transparency for private schools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#E7E3D6; --paper2:#EEEBE0; --card:#FCFBF6; --card2:#FFFFFF;
+    --ink:#1E1E19; --dark:#17201B; --dark2:#1F2A23;
+    --maroon:#6E1D2B; --maroon2:#591521;
+    --green:#2C5D49; --green2:#234C3E; --sage:#D2DFD1;
+    --rose:#EBD2D7; --roseink:#88243A; --ochre:#9C7E22;
+    --muted:#847E6D; --border:#D6D1C2; --hair:#CFC9B9;
+    --font-heading:'Fraunces', serif; --font-body:'DM Sans', sans-serif; --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  *{border-radius:0 !important;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+    background-color:var(--paper);
+    background-image:radial-gradient(circle at 1px 1px, rgba(23,32,27,0.04) 1px, transparent 0);
+    background-size:24px 24px;}
+  h1,h2,h3,h4{font-family:var(--font-heading);font-weight:500;letter-spacing:-0.02em;margin:0;}
+  strong,b{font-weight:600;}
+  p{line-height:1.6;margin:0;}
+  a{color:var(--maroon);text-decoration:none;}
+  a:hover{color:var(--maroon2);}
+  .label{font-family:var(--font-body);font-size:12px;letter-spacing:0;font-weight:500;color:var(--muted);}
+  .mono{font-family:var(--font-mono);}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 32px;}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px;padding:12px 22px;border-radius:9px;border:none;cursor:pointer;font-family:inherit;}
+  .btn-maroon{background:var(--maroon);color:var(--paper2);}
+  .btn-maroon:hover{background:var(--maroon2);color:var(--paper2);}
+  .btn-maroon.cta{background:var(--paper2);color:var(--maroon);border:1px solid var(--maroon);}
+  .btn-maroon.cta:hover{background:var(--maroon);color:var(--paper2);}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--border);}
+  .chip{display:inline-flex;align-items:center;font-family:var(--font-body);font-size:10px;letter-spacing:0.08em;padding:4px 8px;border-radius:5px;}
+  .chip-green{background:var(--sage);color:var(--green);}
+  .chip-rose{background:var(--rose);color:var(--roseink);}
+
+  /* top marketing nav */
+  header.site{position:sticky;top:0;z-index:40;background:rgba(231,227,214,0.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+  header.site .bar{display:flex;align-items:center;gap:20px;padding:14px 0;}
+  .logo{display:flex;align-items:center;gap:10px;color:var(--ink);}
+  .logo .mark{width:30px;height:30px;border-radius:7px;background:var(--maroon);display:flex;align-items:center;justify-content:center;}
+  .logo b{font-family:var(--font-heading);font-size:20px;font-weight:600;}
+  .navlinks{display:flex;flex-wrap:wrap;gap:22px;align-items:center;font-size:15px;font-weight:500;}
+  .navlinks a{color:#4A463B;}
+
+  /* hero */
+  .hero{position:relative;padding:94px 0 58px;overflow:hidden;}
+  .hero .grid{display:grid;grid-template-columns:1.08fr 0.92fr;gap:56px;align-items:center;position:relative;}
+  .hero h1{font-size:58px;line-height:1.02;letter-spacing:-0.022em;}
+  .hero h1 .accent{font-style:italic;font-weight:500;color:var(--maroon);}
+  .kicker{display:flex;align-items:center;gap:13px;font-family:var(--font-body);font-size:13px;letter-spacing:0;font-weight:500;color:var(--maroon);}
+  .kicker .ln{height:1px;width:46px;background:var(--maroon);opacity:0.45;}
+  .eyebrow{color:var(--maroon);}
+
+  /* generic sections */
+  section{scroll-margin-top:72px;}
+  .sec{padding:92px 0;}
+  .sechead{max-width:760px;margin-bottom:34px;}
+  .sechead .num{font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--ochre);letter-spacing:0;}
+  .sechead h2{font-size:42px;line-height:1.05;letter-spacing:-0.018em;margin:10px 0 10px;}
+  .center{max-width:720px;margin:0 auto;}
+  .dform{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .dform .full{grid-column:1 / -1;}
+  .dform label{display:block;font-family:var(--font-body);font-size:11px;letter-spacing:0.08em;color:var(--muted);margin-bottom:6px;}
+  .dform input,.dform select,.dform textarea{width:100%;background:var(--card2);border:1px solid var(--border);padding:12px 14px;font-family:inherit;font-size:15px;color:var(--ink);}
+  .dform input:focus,.dform select:focus,.dform textarea:focus{outline:none;border-color:var(--maroon);}
+  .dform textarea{min-height:96px;resize:vertical;}
+  @media(max-width:560px){.dform{grid-template-columns:1fr;}}
+
+  /* motion */
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .72s cubic-bezier(.2,.7,.2,1),transform .72s cubic-bezier(.2,.7,.2,1);}
+  .reveal.is-in{opacity:1;transform:none;}
+  .d1{transition-delay:.07s}.d2{transition-delay:.15s}.d3{transition-delay:.23s}.d4{transition-delay:.31s}.d5{transition-delay:.39s}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1!important;transform:none!important;transition:none!important;}}
+  @media(max-width:860px){.hero .grid{grid-template-columns:1fr;gap:38px;}.hero h1{font-size:44px;}.sechead h2{font-size:34px;}}
+
+  /* browser frame */
+  .frame{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:0 30px 70px rgba(30,30,25,0.16);}
+  .frame .chrome{display:flex;align-items:center;gap:8px;padding:11px 14px;background:var(--paper2);border-bottom:1px solid var(--border);}
+  .dot{width:11px;height:11px;border-radius:50%;}
+  .addr{margin-left:10px;font-family:var(--font-mono);font-size:11px;color:var(--muted);background:#fff;border:1px solid var(--border);border-radius:6px;padding:4px 10px;}
+
+  /* app shell inside frame */
+  .app{background:var(--paper);}
+  .app .topbar{display:flex;align-items:center;gap:16px;background:var(--dark);color:#D9E2D7;padding:12px 18px;}
+  .app .topbar .alogo{display:flex;align-items:center;gap:9px;}
+  .app .topbar .alogo .m{width:26px;height:26px;border-radius:6px;background:var(--maroon);display:flex;align-items:center;justify-content:center;}
+  .app .topbar .alogo b{font-family:var(--font-heading);font-size:17px;color:#fff;}
+  .app .topbar .tiny{font-family:var(--font-body);font-size:9px;letter-spacing:0.1em;color:#8FA093;}
+  .classsel{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:6px 12px;font-size:13px;color:#EAF0E8;}
+  .anav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap;}
+  .anav button{font-family:inherit;font-size:13px;color:#AFBDB2;background:transparent;border:none;padding:8px 12px;border-radius:7px;cursor:pointer;position:relative;}
+  .anav button:hover{color:#fff;}
+  .anav button.on{color:#fff;}
+  .anav button.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--maroon);border-radius:2px;}
+  .auser{display:flex;align-items:center;gap:9px;}
+  .auser .av{width:30px;height:30px;border-radius:6px;background:var(--maroon);color:#fff;font-family:var(--font-mono);font-size:11px;display:flex;align-items:center;justify-content:center;}
+
+  .roleswitch{display:flex;gap:6px;justify-content:flex-start;margin-bottom:22px;flex-wrap:wrap;}
+  .roleswitch button{font-family:inherit;font-weight:600;font-size:14px;padding:9px 18px;border-radius:999px;cursor:pointer;border:1px solid var(--border);background:#fff;color:#4A463B;}
+  .roleswitch button.on{background:var(--dark);color:#fff;border-color:var(--dark);}
+
+  .demo-stage{display:flex;gap:20px;align-items:flex-start;max-width:1180px;margin:0 auto;}
+  .rail{flex:0 0 152px;display:flex;flex-direction:column;gap:12px;}
+  .thumb{display:block;width:100%;text-align:left;cursor:pointer;background:var(--card);border:1px solid var(--border);padding:10px;font-family:inherit;opacity:0.5;transform:scale(0.96);transition:opacity .5s ease,transform .5s ease,border-color .5s ease,box-shadow .5s ease;}
+  .thumb:hover{opacity:0.85;}
+  .thumb.on{opacity:1;transform:scale(1);border-color:var(--maroon);box-shadow:0 12px 28px rgba(30,30,25,0.16);}
+  .thumb .tcap{display:flex;gap:3px;margin-bottom:9px;}
+  .thumb .tcap span{width:5px;height:5px;background:#C9BBA8;display:inline-block;}
+  .thumb .tname{font-size:12px;font-weight:600;color:var(--ink);margin-top:9px;}
+  .mini{display:flex;flex-direction:column;gap:5px;}
+  .mini .bar{height:6px;background:#E3DDCE;width:100%;}
+  .mini .row{display:flex;gap:4px;}
+  .mini .cell{height:15px;background:#E3DDCE;flex:1;}
+  .mini .cell.m{background:var(--sage);}
+  .mini .lr{display:flex;align-items:center;gap:5px;}
+  .mini .dot{width:6px;height:6px;background:var(--maroon);flex:none;}
+  .mini .ln{height:6px;background:#E3DDCE;flex:1;}
+  .mini .bars{display:flex;align-items:flex-end;gap:5px;height:36px;}
+  .mini .bars i{flex:1;background:var(--sage);display:block;}
+  .mini .nbox{height:22px;background:var(--sage);width:45%;}
+  @media(max-width:880px){.demo-stage{flex-direction:column;}.rail{flex:0 0 auto;flex-direction:row;overflow-x:auto;width:100%;padding-bottom:4px;}.thumb{flex:0 0 140px;}}
+  .screen{display:none;padding:26px;min-height:520px;}
+  .screen.on{display:block;animation:scrfade .5s cubic-bezier(.2,.7,.2,1);}
+  @keyframes scrfade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  @media(prefers-reduced-motion:reduce){.screen.on{animation:none;}}
+  .screen .crumb{font-family:var(--font-body);font-size:10px;letter-spacing:0.1em;color:var(--muted);}
+  .screen h2.pt{font-size:30px;margin:6px 0 20px;}
+  .row-split{display:flex;flex-wrap:wrap;gap:18px;justify-content:space-between;align-items:flex-start;}
+
+  .statrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;background:var(--card);}
+  .statrow .st{padding:18px;border-right:1px solid var(--border);}
+  .statrow .st:last-child{border-right:none;}
+  .statrow .st.dark{background:var(--dark);color:#EAF0E8;}
+  .statrow .bignum{font-family:var(--font-mono);font-size:30px;font-weight:600;margin:2px 0;}
+
+  .panel{background:var(--card);border:1px solid var(--border);border-radius:12px;}
+  .listrow{display:flex;align-items:center;gap:12px;padding:12px 14px;border-top:1px solid var(--hair);}
+  .ava{width:30px;height:30px;border-radius:6px;background:#E3DFD2;color:#5C5648;font-family:var(--font-mono);font-size:10px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .gradepill{font-family:var(--font-mono);font-weight:600;width:40px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .g-green{background:var(--sage);color:var(--green);}
+  .g-rose{background:var(--rose);color:var(--roseink);}
+
+  table.gb{width:100%;border-collapse:collapse;background:var(--card);}
+  table.gb th{font-family:var(--font-body);font-size:10px;letter-spacing:0.08em;color:var(--muted);text-align:left;padding:12px 12px;border-bottom:1px solid var(--border);font-weight:400;}
+  table.gb td{padding:12px 12px;border-bottom:1px solid var(--hair);font-size:14px;}
+  table.gb td.num{font-family:var(--font-mono);}
+
+  .segtabs{display:inline-flex;background:var(--paper2);border:1px solid var(--border);border-radius:9px;overflow:hidden;}
+  .segtabs span{font-family:var(--font-mono);font-size:12px;padding:8px 14px;color:var(--muted);}
+  .segtabs span.on{background:var(--maroon);color:#fff;}
+
+  .feat{display:flex;flex-wrap:wrap;gap:48px;align-items:center;padding:40px 0;}
+  .feat .txt{flex:1 1 360px;min-width:0;}
+  .feat .viz{flex:1 1 340px;min-width:0;}
+
+  footer{background:var(--dark);color:#CBD6CC;}
+  .footgrid{display:flex;flex-wrap:wrap;gap:40px;justify-content:space-between;align-items:flex-end;padding:104px 8px 0;}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,0.12);margin-top:44px;padding:20px 0 40px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;font-family:var(--font-body);font-size:11px;color:#8FA093;}
+
+  .marquee-sec{padding:4px 0 66px;}
+  .marquee{display:flex;gap:18px;overflow-x:auto;cursor:grab;padding:8px 32px;user-select:none;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .marquee::-webkit-scrollbar{display:none;}
+  .marquee.drag{cursor:grabbing;}
+  .mcard{flex:0 0 300px;background:var(--card2);border:1px solid var(--border);box-shadow:0 14px 34px rgba(30,30,25,0.10);overflow:hidden;}
+  .mcard .mch{display:flex;align-items:center;gap:5px;padding:9px 12px;background:var(--paper2);border-bottom:1px solid var(--border);}
+  .mcard .mch i{width:8px;height:8px;background:#C9BBA8;display:inline-block;}
+  .mcard .mch .maddr{margin-left:6px;font-family:var(--font-mono);font-size:9px;color:var(--muted);}
+  .mcard .mbody{padding:14px;background:var(--card);min-height:172px;}
+  .mcap{font-family:var(--font-body);font-size:10px;letter-spacing:0.1em;color:var(--muted);}
+  .mcard *{pointer-events:none;}
+  .hero-carousel{position:relative;}
+  .hcar{display:flex;gap:16px;overflow-x:auto;cursor:grab;user-select:none;scrollbar-width:none;padding:38px 0;}
+  .hcar::-webkit-scrollbar{display:none;}
+  .hcar.drag{cursor:grabbing;}
+  .hcar{align-items:center;}
+  .hcar .mcard{flex:0 0 324px;background:var(--card2);border:none;box-shadow:0 14px 32px rgba(30,30,25,0.16);transform-origin:center center;}
+  .mshot{position:relative;width:100%;height:232px;overflow:hidden;background:var(--card2);}
+  .mshot::after{content:"";position:absolute;left:0;right:0;bottom:0;height:44px;background:linear-gradient(rgba(255,255,255,0),var(--card2));pointer-events:none;}
+  .mshot-inner{width:940px;transform-origin:top left;}
+  .mshot .screen{display:block !important;animation:none !important;min-height:0;}
+  @media(max-width:720px){
+    .hero h1{font-size:38px;}
+    .statrow{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .statrow .st:nth-child(2){border-right:none;}
+    .anav{width:100%;overflow-x:auto;}
+  }
+</style>
+</head>
+<body>
+
+<!-- SITE NAV -->
+<header class="site">
+  <div class="wrap bar">
+    <a class="logo" href="#top">
+      <span class="mark" aria-hidden="true"><svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      <b>KlaseLog</b>
+    </a>
+    <div style="flex:1 1 auto"></div>
+    <nav class="navlinks">
+      <a href="#portals">Live demo</a>
+      <a href="#features">Features</a>
+      <a href="#integration">Integration</a>
+      <a href="#security">Security</a>
+      <a href="#about">About</a>
+      <a href="#contact" class="btn btn-maroon cta" style="padding:9px 18px;">Request a demo</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="top" class="hero">
+  <div class="wrap grid">
+    <div style="min-width:0;">
+      <div class="kicker reveal">For Philippine private schools <span class="ln"></span></div>
+      <h1 class="reveal d1" style="margin:20px 0 22px;">Transparency for parents.<br><span class="accent">Control for teachers.</span></h1>
+      <p class="reveal d2" style="font-size:19px;color:#56513F;max-width:500px;margin-bottom:30px;">KlaseLog gives parents a live view of their child's grades, while teachers stay in control of what's shared and when. One platform for the whole school, and far less busywork for the people who run it.</p>
+      <div class="reveal d3" style="display:flex;flex-wrap:wrap;gap:12px;">
+        <a href="#contact" class="btn btn-maroon cta">Request a school demo</a>
+        <a href="#portals" class="btn btn-ghost">Try the live demo →</a>
+      </div>
+      <div class="reveal d4" style="margin-top:28px;font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--muted);">Shaped with teachers &amp; administrators at leading Cebu private schools</div>
+    </div>
+    <div class="reveal d2" style="min-width:0;">
+      <div class="hero-carousel">
+        <div class="hcar" id="herocar" aria-label="Live screen previews, drag to scroll">
+          <div class="mcard" data-scr="dashboard" data-addr="app.klaselog.com/teacher"></div>
+          <div class="mcard" data-scr="grades" data-addr="app.klaselog.com/teacher/grades"></div>
+          <div class="mcard" data-scr="overview" data-addr="app.klaselog.com/parent"></div>
+          <div class="mcard" data-scr="whatif" data-addr="app.klaselog.com/student/what-if"></div>
+          <div class="mcard" data-scr="attendance" data-addr="app.klaselog.com/teacher/attendance"></div>
+          <div class="mcard" data-scr="pgrades" data-addr="app.klaselog.com/parent/grades"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STREAMLINE BRIDGE -->
+<section style="background:var(--paper);">
+  <div class="wrap" style="padding:66px 32px;max-width:920px;">
+    <div class="label reveal" style="color:var(--ochre);margin-bottom:14px;">One platform</div>
+    <h2 class="reveal d1" style="font-family:var(--font-heading);font-weight:500;font-size:36px;line-height:1.14;letter-spacing:-0.018em;color:var(--ink);">KlaseLog brings it all into <span style="font-style:italic;color:var(--maroon);">one place</span>, grades recorded once, seen by parents instantly, and never lost when the signal drops.</h2>
+  </div>
+</section>
+
+<!-- LIVE DEMO / PORTALS -->
+<section id="portals" class="sec">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div class="num">Live demo</div>
+      <h2>See exactly what your teachers and parents see.</h2>
+      <p style="font-size:18px;color:#56513F;max-width:620px;">Switch roles and move through the tabs, this is the real interface, not a sketch.</p>
+    </div>
+
+    <div class="roleswitch" role="tablist">
+      <button type="button" class="on" data-role="teacher" onclick="setRole('teacher')">Teacher view</button>
+      <button type="button" data-role="parent" onclick="setRole('parent')">Parent view</button>
+      <button type="button" data-role="student" onclick="setRole('student')">Student view</button>
+    </div>
+
+    <div class="demo-stage">
+      <div class="frame" style="min-width:0;">
+      <div class="chrome">
+        <span class="dot" style="background:#C9574E"></span><span class="dot" style="background:#C9A33E"></span><span class="dot" style="background:#5B9E6B"></span>
+        <span class="addr" id="addr">app.klaselog.com/teacher</span>
+      </div>
+      <div class="app">
+        <!-- app topbar -->
+        <div class="topbar">
+          <div class="alogo"><span class="m"><svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M5 12l4.5 4.5L19 7" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span><div><b>KlaseLog</b><div class="tiny" id="apptag">Student Records</div></div></div>
+          <div class="classsel" id="classsel"><span class="tiny" style="color:#8FA093">Class</span> <strong style="font-weight:600;">Grade 8 · St. Ignatius</strong> ▾</div>
+          <nav class="anav" id="teachernav">
+            <button type="button" class="on" data-scr="dashboard" onclick="go('dashboard')">Dashboard</button>
+            <button type="button" data-scr="grades" onclick="go('grades')">Grades</button>
+            <button type="button" data-scr="attendance" onclick="go('attendance')">Attendance</button>
+            <button type="button" data-scr="students" onclick="go('students')">Students</button>
+            <button type="button" data-scr="reports" onclick="go('reports')">Reports</button>
+          </nav>
+          <nav class="anav" id="parentnav" style="display:none;">
+            <button type="button" class="on" data-scr="overview" onclick="go('overview')">Overview</button>
+            <button type="button" data-scr="pgrades" onclick="go('pgrades')">Grades</button>
+            <button type="button" data-scr="pattend" onclick="go('pattend')">Attendance</button>
+          </nav>
+          <nav class="anav" id="studentnav" style="display:none;">
+            <button type="button" class="on" data-scr="soverview" onclick="go('soverview')">Overview</button>
+            <button type="button" data-scr="sgrades" onclick="go('sgrades')">Grades</button>
+            <button type="button" data-scr="whatif" onclick="go('whatif')">What-if</button>
+          </nav>
+          <div class="auser"><div style="text-align:right;"><div style="font-size:12px;font-weight:600;color:#fff;" id="uname">Ms. Reyes</div><div class="tiny" id="urole">Adviser · Math</div></div><span class="av" id="uav">MR</span></div>
+        </div>
+
+        <!-- TEACHER: DASHBOARD -->
+        <div class="screen on" id="s-dashboard">
+          <div class="crumb">A.Y. 2026–2027 · Second Quarter</div>
+          <h2 class="pt">Good morning, Ms. Reyes.</h2>
+          <div class="statrow" style="margin-bottom:22px;">
+            <div class="st"><div class="label">Class average</div><div class="bignum">87.4</div><div class="label">Very satisfactory</div></div>
+            <div class="st"><div class="label">Attendance</div><div class="bignum">94%</div><div class="label">34 / 36 present today</div></div>
+            <div class="st"><div class="label">To post</div><div class="bignum">12</div><a href="#" onclick="go('grades');return false;" style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.08em;">Review &amp; publish →</a></div>
+            <div class="st dark"><div class="label" style="color:#9FB0A4;">Parent views · week</div><div class="bignum">148</div><div class="label" style="color:#9FB0A4;">81% of parents opened grades</div></div>
+          </div>
+          <div class="row-split">
+            <div style="flex:1 1 420px;min-width:0;">
+              <div class="row-split" style="margin-bottom:6px;"><h3 style="font-size:20px;">Today's classes</h3><span class="label">2 remaining</span></div>
+              <div class="panel">
+                <div class="listrow" style="border-top:none;"><span class="mono" style="font-size:13px;width:58px;">8:00<span style="color:var(--muted)"> AM</span></span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Grade 8 · Mathematics</div><div class="label">Room 204 · 36 students</div></div><span class="chip chip-green">Logged</span></div>
+                <div class="listrow"><span class="mono" style="font-size:13px;width:58px;">10:30<span style="color:var(--muted)"> AM</span></span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Grade 9 · Algebra</div><div class="label">Room 204 · 34 students</div></div><button class="btn btn-maroon" style="padding:7px 14px;font-size:12px;" onclick="go('attendance')">Take attendance</button></div>
+                <div class="listrow"><span class="mono" style="font-size:13px;width:58px;">1:15<span style="color:var(--muted)"> PM</span></span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Grade 8 · Mathematics</div><div class="label">Section Loyola · 35 students</div></div><span class="label">Upcoming</span></div>
+              </div>
+              <div class="row-split" style="margin:18px 0 6px;"><h3 style="font-size:20px;">Needs attention</h3><span class="label">3 flagged</span></div>
+              <div class="panel">
+                <div class="listrow" style="border-top:none;"><span class="ava">JD</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Joaquin Dela Cruz</div><div class="label">Fell to 72 · did not meet</div></div><span class="gradepill g-rose">72</span></div>
+                <div class="listrow"><span class="ava">MV</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Maria Villanueva</div><div class="label">3 absences this quarter</div></div><span class="gradepill g-rose">78</span></div>
+                <div class="listrow"><span class="ava">RL</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Rafael Lim</div><div class="label">2 unposted assessments</div></div><span class="gradepill" style="background:#EDE3C9;color:#7A6418;">79</span></div>
+              </div>
+            </div>
+            <div style="flex:1 1 300px;min-width:0;">
+              <div class="panel" style="background:var(--dark);border-color:var(--dark);color:#D9E2D7;padding:20px;">
+                <div class="label" style="color:#8FA093;">Live · parent view</div>
+                <h3 style="font-size:20px;color:#fff;margin:4px 0 4px;">Parent activity</h3>
+                <p style="font-size:13px;color:#9FB0A4;margin-bottom:14px;">Parents see each grade the moment you post it.</p>
+                <div style="display:flex;flex-direction:column;gap:12px;">
+                  <div style="display:flex;gap:10px;"><span class="ava" style="background:#2C3A30;color:#B6C6B9;">AB</span><div><div style="font-size:13px;color:#EAF0E8;"><strong>Mrs. Santos</strong> viewed Q2 Math grades</div><div class="label" style="color:#7E8F82;">6 min ago</div></div></div>
+                  <div style="display:flex;gap:10px;"><span class="ava" style="background:#2C3A30;color:#B6C6B9;">BT</span><div><div style="font-size:13px;color:#EAF0E8;"><strong>Mr. Tan</strong> acknowledged an absence notice</div><div class="label" style="color:#7E8F82;">41 min ago</div></div></div>
+                  <div style="display:flex;gap:10px;"><span class="ava" style="background:#2C3A30;color:#B6C6B9;">CA</span><div><div style="font-size:13px;color:#EAF0E8;"><strong>Mrs. Aquino</strong> messaged about a quiz</div><div class="label" style="color:#7E8F82;">1 hr ago</div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TEACHER: GRADES -->
+        <div class="screen" id="s-grades">
+          <div class="row-split">
+            <div><div class="crumb">Grade 8 · Mathematics · 36 students</div><h2 class="pt">Gradebook</h2></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;">
+              <button class="btn btn-ghost" style="padding:9px 14px;font-size:13px;">↓ Export</button>
+              <button class="btn btn-ghost" style="padding:9px 14px;font-size:13px;">+ Add assessment</button>
+              <button class="btn btn-maroon" style="padding:9px 16px;font-size:13px;">✓ Post 2 to parents</button>
+            </div>
+          </div>
+          <div class="row-split" style="margin-bottom:14px;">
+            <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+              <div class="segtabs"><span>Q1</span><span class="on">Q2</span><span>Q3</span><span>Q4</span></div>
+              <span class="label">Weights · written 40 · performance 40 · quarterly 20</span>
+            </div>
+            <span class="chip chip-green">7 of 9 posted to parents</span>
+          </div>
+          <div class="panel" style="overflow:hidden;">
+            <table class="gb">
+              <thead><tr><th>Student</th><th>Quiz 1</th><th>Quiz 2</th><th>Long test</th><th>Project</th><th>Quarter</th><th>Descriptor</th><th>Parents</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Andrea Bautista</strong><div class="label">1360-2201</div></td><td class="num">94</td><td class="num">91</td><td class="num">95</td><td class="num">96</td><td><span class="gradepill g-green">94</span></td><td><span class="chip chip-green">Outstanding</span></td><td class="label">■ Posted</td></tr>
+                <tr><td><strong>Joaquin Dela Cruz</strong><div class="label">1360-2202</div></td><td class="num">70</td><td class="num">74</td><td class="num">71</td><td class="num">78</td><td><span class="gradepill g-rose">72</span></td><td><span class="chip chip-rose">Did not meet</span></td><td class="label" style="color:var(--roseink)">□ Hidden</td></tr>
+                <tr><td><strong>Sofia Garcia</strong><div class="label">1360-2203</div></td><td class="num">88</td><td class="num">90</td><td class="num">86</td><td class="num">92</td><td><span class="gradepill g-green">89</span></td><td><span class="chip chip-green">Very satisfactory</span></td><td class="label">■ Posted</td></tr>
+                <tr><td><strong>Rafael Lim</strong><div class="label">1360-2204</div></td><td class="num">80</td><td class="num">78</td><td class="num">79</td><td class="num">82</td><td><span class="gradepill g-rose">79</span></td><td><span class="chip chip-rose">Fairly satisfactory</span></td><td class="label">■ Posted</td></tr>
+                <tr><td><strong>Gabriel Mendoza</strong><div class="label">1360-2205</div></td><td class="num">85</td><td class="num">88</td><td class="num">90</td><td class="num">87</td><td><span class="gradepill g-green">87</span></td><td><span class="chip chip-green">Very satisfactory</span></td><td class="label">■ Posted</td></tr>
+                <tr><td><strong>Isabella Reyes</strong><div class="label">1360-2206</div></td><td class="num">96</td><td class="num">94</td><td class="num">98</td><td class="num">95</td><td><span class="gradepill g-green">96</span></td><td><span class="chip chip-green">Outstanding</span></td><td class="label">■ Posted</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="label" style="margin-top:12px;">Outstanding 90–100 · Very satisfactory 85–89 · Satisfactory 80–84 · Fairly satisfactory 75–79 · Did not meet below 75</div>
+        </div>
+
+        <!-- TEACHER: ATTENDANCE -->
+        <div class="screen" id="s-attendance">
+          <div class="row-split">
+            <div><div class="crumb">Grade 8 · Mathematics · 8:00 AM</div><h2 class="pt">Attendance</h2></div>
+            <button class="btn btn-maroon" style="padding:9px 16px;font-size:13px;">➤ Submit &amp; notify parents</button>
+          </div>
+          <div class="statrow" style="margin-bottom:20px;grid-template-columns:repeat(4,minmax(0,1fr));">
+            <div class="st"><div class="bignum">10</div><div class="label">Present</div></div>
+            <div class="st"><div class="bignum" style="color:var(--ochre)">1</div><div class="label">Late</div></div>
+            <div class="st"><div class="bignum" style="color:var(--maroon)">1</div><div class="label">Absent</div></div>
+            <div class="st"><div class="bignum">0</div><div class="label">Excused</div></div>
+          </div>
+          <div class="row-split">
+            <div style="flex:999 1 420px;min-width:0;">
+              <div class="panel">
+                <div class="listrow" style="border-top:none;"><span class="ava">AB</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Andrea Bautista</div><div class="label">On time</div></div><span class="chip chip-green">Present</span></div>
+                <div class="listrow"><span class="ava">RL</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Rafael Lim</div><div class="label">Arrived 8:14 AM</div></div><span class="chip" style="background:#EDE3C9;color:#7A6418;">Late</span></div>
+                <div class="listrow"><span class="ava">MV</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Maria Villanueva</div><div class="label">No excuse on file</div></div><span class="chip chip-rose">Absent</span></div>
+                <div class="listrow"><span class="ava">IR</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Isabella Reyes</div><div class="label">On time</div></div><span class="chip chip-green">Present</span></div>
+              </div>
+            </div>
+            <div style="flex:1 1 280px;min-width:0;">
+              <div class="panel" style="background:var(--dark);border-color:var(--dark);color:#D9E2D7;padding:18px;">
+                <div class="label" style="color:#8FA093;">On submit</div>
+                <h3 style="font-size:18px;color:#fff;margin:4px 0 6px;">Parent notifications</h3>
+                <p style="font-size:13px;color:#9FB0A4;">Parents of absent &amp; late students get an instant notice,no paper slips, no next-day surprises.</p>
+                <div class="label" style="margin-top:14px;color:#8FA093;">Will notify <span class="mono" style="color:#fff;font-size:18px;">2</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TEACHER: STUDENTS -->
+        <div class="screen" id="s-students">
+          <div class="row-split">
+            <div><div class="crumb">Grade 8 · St. Ignatius · Section Ignatius</div><h2 class="pt">Students</h2></div>
+            <button class="btn btn-maroon" style="padding:9px 16px;font-size:13px;">+ Enrol student</button>
+          </div>
+          <div class="row-split">
+            <div style="flex:999 1 420px;min-width:0;">
+              <div class="panel">
+                <div class="listrow" style="border-top:none;"><span class="ava">AB</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Andrea Bautista</div><div class="label">1360-2201</div></div><span class="label">99% present</span><span class="gradepill g-green">94</span></div>
+                <div class="listrow"><span class="ava">JD</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Joaquin Dela Cruz</div><div class="label">1360-2202</div></div><span class="label">88% present</span><span class="gradepill g-rose">74</span></div>
+                <div class="listrow" style="background:var(--card2);"><span class="ava" style="background:var(--dark);color:#B6C6B9;">MS</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Miguel Santos</div><div class="label">1360-2207</div></div><span class="label">94% present</span><span class="gradepill g-green">88</span></div>
+                <div class="listrow"><span class="ava">DT</span><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Danielle Tan</div><div class="label">1360-2208</div></div><span class="label">99% present</span><span class="gradepill g-green">91</span></div>
+              </div>
+            </div>
+            <div style="flex:1 1 300px;min-width:0;">
+              <div class="panel" style="overflow:hidden;">
+                <div style="background:var(--dark);color:#EAF0E8;padding:18px;display:flex;gap:12px;align-items:center;"><span class="ava" style="width:42px;height:42px;background:#2C3A30;color:#B6C6B9;font-size:13px;">MS</span><div><div style="font-family:var(--font-heading);font-size:20px;color:#fff;">Miguel Santos</div><div class="label" style="color:#8FA093;">1360-2207 · Grade 8</div></div></div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;">
+                  <div style="padding:14px;border-right:1px solid var(--hair);border-bottom:1px solid var(--hair);"><div class="label">Gen. average</div><div class="mono" style="font-size:24px;font-weight:600;">88</div><div class="label">Very satisfactory</div></div>
+                  <div style="padding:14px;border-bottom:1px solid var(--hair);"><div class="label">Attendance</div><div class="mono" style="font-size:24px;font-weight:600;">94%</div><div class="label">1 absence · 2 late</div></div>
+                </div>
+                <div style="padding:14px;border-bottom:1px solid var(--hair);"><div class="label">Guardian</div><div style="display:flex;align-items:center;gap:8px;margin-top:6px;"><span class="ava">S</span><div><div style="font-size:13px;font-weight:600;">Mrs. Santos</div><div class="label">Activated · last seen 8 min ago</div></div></div></div>
+                <div style="padding:14px;"><button class="btn btn-ghost" style="width:100%;justify-content:center;font-size:13px;">▢ Message guardian</button></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TEACHER: REPORTS -->
+        <div class="screen" id="s-reports">
+          <div class="row-split">
+            <div><div class="crumb">Grade 8 · Mathematics · Second Quarter</div><h2 class="pt">Reports</h2></div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start;">
+              <button class="btn btn-ghost" style="padding:9px 14px;font-size:13px;">↓ Export CSV</button>
+              <button class="btn btn-maroon" style="padding:9px 16px;font-size:13px;">▢ Generate report cards</button>
+            </div>
+          </div>
+          <div class="statrow" style="margin-bottom:22px;">
+            <div class="st"><div class="label">Class average</div><div class="bignum">86.1</div><div class="label">Very satisfactory</div></div>
+            <div class="st"><div class="label">Grades posted</div><div class="bignum">124<span style="color:var(--muted);font-size:18px;">/136</span></div><div class="label" style="color:var(--ochre)">12 still unposted</div></div>
+            <div class="st"><div class="label">At risk</div><div class="bignum" style="color:var(--maroon)">3</div><div class="label">below 80 this quarter</div></div>
+            <div class="st dark"><div class="label" style="color:#9FB0A4;">Parent reach</div><div class="bignum">81%</div><div class="label" style="color:#9FB0A4;">29 of 36 families active</div></div>
+          </div>
+          <div class="row-split">
+            <div style="flex:999 1 420px;min-width:0;">
+              <h3 style="font-size:20px;margin-bottom:14px;">Grade distribution</h3>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div><div class="row-split" style="margin-bottom:5px;"><span style="font-size:13px;">Outstanding <span class="label">90–100</span></span><span class="mono" style="font-weight:600;">9</span></div><div style="height:16px;background:#DED9C9;border-radius:4px;overflow:hidden;"><div style="width:65%;height:100%;background:var(--green2);"></div></div></div>
+                <div><div class="row-split" style="margin-bottom:5px;"><span style="font-size:13px;">Very satisfactory <span class="label">85–89</span></span><span class="mono" style="font-weight:600;">12</span></div><div style="height:16px;background:#DED9C9;border-radius:4px;overflow:hidden;"><div style="width:85%;height:100%;background:var(--green);"></div></div></div>
+                <div><div class="row-split" style="margin-bottom:5px;"><span style="font-size:13px;">Satisfactory <span class="label">80–84</span></span><span class="mono" style="font-weight:600;">9</span></div><div style="height:16px;background:#DED9C9;border-radius:4px;overflow:hidden;"><div style="width:62%;height:100%;background:#5E7F75;"></div></div></div>
+                <div><div class="row-split" style="margin-bottom:5px;"><span style="font-size:13px;">Fairly satisfactory <span class="label">75–79</span></span><span class="mono" style="font-weight:600;">4</span></div><div style="height:16px;background:#DED9C9;border-radius:4px;overflow:hidden;"><div style="width:30%;height:100%;background:var(--ochre);"></div></div></div>
+                <div><div class="row-split" style="margin-bottom:5px;"><span style="font-size:13px;">Did not meet <span class="label">&lt; 75</span></span><span class="mono" style="font-weight:600;">2</span></div><div style="height:16px;background:#DED9C9;border-radius:4px;overflow:hidden;"><div style="width:16%;height:100%;background:var(--maroon);"></div></div></div>
+              </div>
+            </div>
+            <div style="flex:1 1 300px;min-width:0;">
+              <div class="panel" style="padding:18px;margin-bottom:14px;">
+                <div class="label">Q2 report cards</div>
+                <div class="mono" style="font-size:28px;font-weight:600;">32 <span style="font-size:14px;color:var(--muted);">of 36 ready</span></div>
+                <div style="height:10px;background:#DED9C9;border-radius:4px;margin:10px 0;overflow:hidden;"><div style="width:89%;height:100%;background:var(--green);"></div></div>
+                <p style="font-size:13px;color:#56513F;margin-bottom:12px;">4 cards blocked, <span style="color:var(--maroon);font-weight:600;">12 grades unposted</span> across 4 students.</p>
+                <button class="btn btn-maroon" style="width:100%;justify-content:center;">Generate 32 cards</button>
+              </div>
+              <div class="panel" style="background:var(--dark);border-color:var(--dark);color:#D9E2D7;padding:18px;">
+                <div class="label" style="color:#8FA093;">Why it matters</div>
+                <p style="font-size:13px;color:#C7D3C9;margin-top:6px;">Report cards generate from the same posted grades parents already see, no re-encoding, no mismatch between what's sent home and what's on file.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PARENT: OVERVIEW -->
+        <div class="screen" id="s-overview">
+          <div class="crumb">A.Y. 2026–2027 · Second Quarter</div>
+          <h2 class="pt">Overview</h2>
+          <div class="panel" style="padding:18px;display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin-bottom:14px;">
+            <div style="display:flex;gap:12px;align-items:center;flex:1 1 240px;"><span class="ava" style="width:44px;height:44px;background:var(--dark);color:#B6C6B9;font-size:13px;">MS</span><div><div style="font-family:var(--font-heading);font-size:20px;">Miguel Santos</div><div class="label">Grade 8 · Adviser Ms. Reyes</div></div></div>
+            <div><div class="label">Gen. average</div><div class="mono" style="font-size:24px;font-weight:600;">88.1</div></div>
+            <div><div class="label">Attendance</div><div class="mono" style="font-size:24px;font-weight:600;">94%</div></div>
+          </div>
+          <div class="panel" style="padding:16px 18px;border-left:3px solid var(--maroon);display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <div><div class="label" style="color:var(--maroon)">Just posted · 2h ago</div><div style="font-weight:600;">Mathematics, Long Test</div><div class="label">Posted by Ms. Reyes · now visible to you</div></div>
+            <span class="gradepill g-green" style="width:48px;height:36px;font-size:16px;">85</span>
+          </div>
+          <div class="row-split">
+            <div style="flex:999 1 400px;min-width:0;">
+              <div class="row-split" style="margin-bottom:6px;"><h3 style="font-size:20px;">Subjects</h3><span class="label">8 subjects</span></div>
+              <div class="panel">
+                <div class="listrow" style="border-top:none;"><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Filipino</div><div class="label">Mr. Cruz</div></div><span class="chip chip-green">Outstanding</span><span class="gradepill g-green">90</span></div>
+                <div class="listrow"><div style="flex:1;"><div style="font-weight:600;font-size:14px;">English Composition</div><div class="label">Ms. Flores</div></div><span class="chip chip-green">Very satisfactory</span><span class="gradepill g-green">88</span></div>
+                <div class="listrow"><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Mathematics <span class="chip chip-rose" style="background:#E7DECB;color:#7A6418;">New</span></div><div class="label">Ms. Reyes</div></div><span class="chip" style="background:#E3DFD2;color:#5C5648;">Satisfactory</span><span class="gradepill g-green">83</span></div>
+                <div class="listrow"><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Science</div><div class="label">Mr. Ramos</div></div><span class="chip chip-green">Very satisfactory</span><span class="gradepill g-green">86</span></div>
+              </div>
+            </div>
+            <div style="flex:1 1 280px;min-width:0;">
+              <h3 style="font-size:20px;margin-bottom:6px;">From the school</h3>
+              <div class="panel" style="padding:4px 0;">
+                <div class="listrow" style="border-top:none;"><div><div class="label">Nov 22</div><div style="font-size:13px;font-weight:600;">Q2 Parent-Teacher Conference</div><div class="label">Book your slot with Ms. Reyes</div></div></div>
+                <div class="listrow"><div><div class="label">Dec 15</div><div style="font-size:13px;font-weight:600;">Q2 Report cards released</div><div class="label">Available here in the portal</div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PARENT: GRADES -->
+        <div class="screen" id="s-pgrades">
+          <div class="crumb">Miguel Santos · Grade 8 · Second Quarter</div>
+          <h2 class="pt">Grades</h2>
+          <div class="panel" style="overflow:hidden;">
+            <table class="gb">
+              <thead><tr><th>Subject</th><th>Teacher</th><th>Written</th><th>Perf.</th><th>Quarterly</th><th>Grade</th><th>Descriptor</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Filipino</strong></td><td>Mr. Cruz</td><td class="num">91</td><td class="num">90</td><td class="num">89</td><td><span class="gradepill g-green">90</span></td><td><span class="chip chip-green">Outstanding</span></td></tr>
+                <tr><td><strong>English</strong></td><td>Ms. Flores</td><td class="num">88</td><td class="num">89</td><td class="num">87</td><td><span class="gradepill g-green">88</span></td><td><span class="chip chip-green">Very satisfactory</span></td></tr>
+                <tr><td><strong>Mathematics</strong></td><td>Ms. Reyes</td><td class="num">82</td><td class="num">84</td><td class="num">83</td><td><span class="gradepill g-green">83</span></td><td><span class="chip" style="background:#E3DFD2;color:#5C5648;">Satisfactory</span></td></tr>
+                <tr><td><strong>Science</strong></td><td>Mr. Ramos</td><td class="num">86</td><td class="num">87</td><td class="num">85</td><td><span class="gradepill g-green">86</span></td><td><span class="chip chip-green">Very satisfactory</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="label" style="margin-top:12px;">You see each grade the moment Ms. Reyes posts it, no waiting for a report card.</div>
+        </div>
+
+        <!-- PARENT: ATTENDANCE -->
+        <div class="screen" id="s-pattend">
+          <div class="crumb">Miguel Santos · Grade 8</div>
+          <h2 class="pt">Attendance</h2>
+          <div class="statrow" style="margin-bottom:20px;">
+            <div class="st"><div class="bignum">94%</div><div class="label">This quarter</div></div>
+            <div class="st"><div class="bignum">1</div><div class="label">Absence</div></div>
+            <div class="st"><div class="bignum" style="color:var(--ochre)">2</div><div class="label">Late</div></div>
+            <div class="st"><div class="bignum">0</div><div class="label">Unexcused</div></div>
+          </div>
+          <div class="panel">
+            <div class="listrow" style="border-top:none;"><span class="mono label" style="width:90px;">Fri · 07</span><div style="flex:1;font-size:14px;">Present</div><span class="chip chip-green">On time</span></div>
+            <div class="listrow"><span class="mono label" style="width:90px;">Thu · 06</span><div style="flex:1;font-size:14px;">Present</div><span class="chip chip-green">On time</span></div>
+            <div class="listrow"><span class="mono label" style="width:90px;">Wed · 05</span><div style="flex:1;font-size:14px;color:var(--maroon);">Absent, you acknowledged</div><span class="chip chip-rose">Absent</span></div>
+            <div class="listrow"><span class="mono label" style="width:90px;">Tue · 04</span><div style="flex:1;font-size:14px;">Late, arrived 8:14</div><span class="chip" style="background:#EDE3C9;color:#7A6418;">Late</span></div>
+          </div>
+        </div>
+
+        <!-- STUDENT: OVERVIEW -->
+        <div class="screen" id="s-soverview">
+          <div class="crumb">A.Y. 2026–2027 · Second Quarter</div>
+          <h2 class="pt">Hi, Miguel.</h2>
+          <div class="statrow" style="margin-bottom:22px;">
+            <div class="st"><div class="label">Your average</div><div class="bignum">88.1</div><div class="label">Very satisfactory</div></div>
+            <div class="st"><div class="label">Attendance</div><div class="bignum">94%</div><div class="label">1 absence · 2 late</div></div>
+            <div class="st"><div class="label">Subjects</div><div class="bignum">8</div><div class="label">7 passing · 1 to watch</div></div>
+            <div class="st dark"><div class="label" style="color:#9FB0A4;">To improve</div><div class="bignum" style="color:#E8C6CB;">1</div><div class="label" style="color:#9FB0A4;">Filipino · 68</div></div>
+          </div>
+          <div class="panel" style="padding:16px 18px;border-left:3px solid var(--maroon);display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+            <div><div class="label" style="color:var(--maroon)">Just posted · 2h ago</div><div style="font-weight:600;">Mathematics, Long Test</div><div class="label">Posted by Ms. Reyes</div></div>
+            <span class="gradepill g-green" style="width:48px;height:36px;font-size:16px;">85</span>
+          </div>
+          <div class="row-split">
+            <div style="flex:999 1 400px;min-width:0;">
+              <div class="row-split" style="margin-bottom:6px;"><h3 style="font-size:20px;">Your subjects</h3><span class="label">8 subjects</span></div>
+              <div class="panel">
+                <div class="listrow" style="border-top:none;"><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Filipino</div><div class="label">Mr. Cruz</div></div><span class="chip chip-rose">Did not meet</span><span class="gradepill g-rose">68</span></div>
+                <div class="listrow"><div style="flex:1;"><div style="font-weight:600;font-size:14px;">English Composition</div><div class="label">Ms. Flores</div></div><span class="chip chip-green">Very satisfactory</span><span class="gradepill g-green">88</span></div>
+                <div class="listrow"><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Mathematics</div><div class="label">Ms. Reyes</div></div><span class="chip" style="background:#E3DFD2;color:#5C5648;">Satisfactory</span><span class="gradepill g-green">83</span></div>
+                <div class="listrow"><div style="flex:1;"><div style="font-weight:600;font-size:14px;">Science</div><div class="label">Mr. Ramos</div></div><span class="chip chip-green">Very satisfactory</span><span class="gradepill g-green">86</span></div>
+              </div>
+            </div>
+            <div style="flex:1 1 280px;min-width:0;">
+              <div class="panel" style="padding:18px;">
+                <div class="label" style="color:var(--maroon)">Plan ahead</div>
+                <h3 style="font-size:18px;margin:4px 0 6px;">What-if calculator</h3>
+                <p style="font-size:13px;color:#56513F;margin-bottom:12px;">See the score you need to hit your target in any subject.</p>
+                <button class="btn btn-maroon" style="width:100%;justify-content:center;" onclick="go('whatif')">Open calculator</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STUDENT: GRADES -->
+        <div class="screen" id="s-sgrades">
+          <div class="crumb">Miguel Santos · Grade 8 · Second Quarter</div>
+          <h2 class="pt">My grades</h2>
+          <div class="panel" style="overflow:hidden;">
+            <table class="gb">
+              <thead><tr><th>Subject</th><th>Teacher</th><th>Written</th><th>Perf.</th><th>Quarterly</th><th>Grade</th><th>Descriptor</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Filipino</strong></td><td>Mr. Cruz</td><td class="num">72</td><td class="num">65</td><td class="num">67</td><td><span class="gradepill g-rose">68</span></td><td><span class="chip chip-rose">Did not meet</span></td></tr>
+                <tr><td><strong>English</strong></td><td>Ms. Flores</td><td class="num">88</td><td class="num">89</td><td class="num">87</td><td><span class="gradepill g-green">88</span></td><td><span class="chip chip-green">Very satisfactory</span></td></tr>
+                <tr><td><strong>Mathematics</strong></td><td>Ms. Reyes</td><td class="num">82</td><td class="num">84</td><td class="num">83</td><td><span class="gradepill g-green">83</span></td><td><span class="chip" style="background:#E3DFD2;color:#5C5648;">Satisfactory</span></td></tr>
+                <tr><td><strong>Science</strong></td><td>Mr. Ramos</td><td class="num">86</td><td class="num">87</td><td class="num">85</td><td><span class="gradepill g-green">86</span></td><td><span class="chip chip-green">Very satisfactory</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="label" style="margin-top:12px;">You see each grade the moment your teacher posts it, no waiting for a report card.</div>
+        </div>
+
+        <!-- STUDENT: WHAT-IF -->
+        <div class="screen" id="s-whatif">
+          <div class="crumb">Miguel Santos · Grade 8</div>
+          <h2 class="pt">What-if calculator</h2>
+          <div class="row-split">
+            <div style="flex:999 1 320px;min-width:0;">
+              <div class="panel" style="padding:20px;">
+                <div class="label">Subject</div>
+                <div style="background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;margin:5px 0 16px;">Filipino ▾</div>
+                <div class="label">Weighting · written 40 · performance 40 · quarterly 20</div>
+                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+                  <label style="flex:1 1 80px;" class="label">Written<div style="margin-top:5px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px;font-family:var(--font-mono);font-size:15px;color:var(--ink);">72</div></label>
+                  <label style="flex:1 1 80px;" class="label">Performance<div style="margin-top:5px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:9px;font-family:var(--font-mono);font-size:15px;color:var(--ink);">65</div></label>
+                  <label style="flex:1 1 80px;" class="label">Quarterly<div style="margin-top:5px;background:#fff;border:1px solid var(--maroon);border-radius:8px;padding:9px;font-family:var(--font-mono);font-size:15px;color:var(--maroon);">?</div></label>
+                </div>
+              </div>
+            </div>
+            <div style="flex:1 1 300px;min-width:0;">
+              <div class="panel" style="background:var(--dark);border-color:var(--dark);color:#D9E2D7;padding:22px;">
+                <div class="label" style="color:#8FA093;">Projected</div>
+                <div class="mono" style="font-size:44px;font-weight:600;color:#fff;line-height:1;">88</div>
+                <p style="font-size:14px;color:#C7D3C9;margin-top:8px;">To reach a <strong style="color:#fff;">75</strong> quarter grade in Filipino, you'd need <strong style="color:#fff;">88</strong> on the quarterly assessment.</p>
+                <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;">
+                  <span class="chip" style="background:rgba(255,255,255,0.08);color:#C7D3C9;">Current 68</span>
+                  <span class="chip chip-green">Target 75</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      </div>
+      <div class="rail" id="rail" aria-label="Screen previews"></div>
+    </div>
+    <p class="center label" style="margin-top:16px;">Interface preview · live switching, representative data</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="sec" style="background:var(--paper2);">
+  <div class="wrap">
+    <div class="sechead reveal">
+      <div class="num">Everything in one place</div>
+      <h2>One platform, in place of the patchwork.</h2>
+    </div>
+    <div class="feat">
+      <div class="txt reveal">
+        <div class="label" style="color:var(--maroon)">Real-time grades</div>
+        <div style="display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:11px;color:var(--green);background:var(--sage);padding:4px 10px;border-radius:5px;margin-top:9px;">↳ Replaces 40+ paper slips a quarter</div>
+        <h3 style="font-size:28px;margin:10px 0 12px;">Parents stay informed without a single slip</h3>
+        <p style="font-size:16px;color:#56513F;margin-bottom:14px;">The moment a teacher posts a score it reaches the student and their parents, with the official descriptor attached. The quiet stretch between report cards disappears, and so do the forty hand-written notices.</p>
+        <div class="label">✓ No manual notifications &nbsp; ✓ Visible across all grade levels</div>
+      </div>
+      <div class="viz reveal d1"><div class="frame" style="box-shadow:0 16px 40px rgba(30,30,25,0.1);"><div style="padding:16px;background:var(--paper);"><div class="label" style="margin-bottom:10px;">Latest updates · live</div><div class="panel" style="display:flex;justify-content:space-between;padding:10px 12px;margin-bottom:8px;"><span style="font-size:13px;">Science · summative</span><span class="gradepill g-green">91</span></div><div class="panel" style="display:flex;justify-content:space-between;padding:10px 12px;margin-bottom:8px;border-color:#E6CDD2;"><span style="font-size:13px;">Filipino · summative</span><span class="gradepill g-rose">68</span></div><div class="panel" style="display:flex;justify-content:space-between;padding:10px 12px;"><span style="font-size:13px;">English · quiz</span><span class="gradepill g-green">90</span></div></div></div></div>
+    </div>
+    <div class="feat" style="flex-direction:row-reverse;">
+      <div class="txt reveal">
+        <div class="label" style="color:var(--maroon)">One place to record</div>
+        <div style="display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:11px;color:var(--green);background:var(--sage);padding:4px 10px;border-radius:5px;margin-top:9px;">↳ Replaces entry across 3 systems</div>
+        <h3 style="font-size:28px;margin:10px 0 12px;">Record once, not three times</h3>
+        <p style="font-size:16px;color:#56513F;margin-bottom:14px;">KlaseLog replaces the retyping across the class record, the portal, and Teams with a single entry. Teachers who live in Excel paste straight in, and grades reflect instantly.</p>
+        <div class="label">✓ Copy-paste from Excel &nbsp; ✓ One login, not several</div>
+      </div>
+      <div class="viz reveal d1"><div class="frame" style="box-shadow:0 16px 40px rgba(30,30,25,0.1);"><div style="padding:16px;background:var(--paper);"><div class="label" style="margin-bottom:10px;">Enter a grade once</div><table class="gb" style="border-radius:8px;overflow:hidden;"><thead><tr><th>Student</th><th>Quiz</th><th>Exam</th></tr></thead><tbody><tr><td>Reyes, P.</td><td class="num" style="background:var(--sage);outline:2px solid var(--green);outline-offset:-2px;">88</td><td class="num">86</td></tr><tr><td>Lim, G.</td><td class="num">80</td><td class="num">—</td></tr></tbody></table><button class="btn btn-ghost" style="margin-top:10px;font-size:12px;padding:7px 12px;">⧉ Paste from Excel</button></div></div></div>
+    </div>
+    <div class="feat">
+      <div class="txt reveal">
+        <div class="label" style="color:var(--maroon)">Built for real conditions</div>
+        <div style="display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:11px;color:var(--green);background:var(--sage);padding:4px 10px;border-radius:5px;margin-top:9px;">↳ Replaces records lost to dead zones</div>
+        <h3 style="font-size:28px;margin:10px 0 12px;">A dropped signal never loses a day of grading</h3>
+        <p style="font-size:16px;color:#56513F;margin-bottom:14px;">When the connection drops during a storm or an outage, records save on-device and sync automatically the moment signal returns. Grading continues, and nothing is lost, the single biggest fear teachers named.</p>
+        <div class="label">✓ Offline-first &nbsp; ✓ Automatic sync on reconnect</div>
+      </div>
+      <div class="viz reveal d1"><div class="frame" style="box-shadow:0 16px 40px rgba(30,30,25,0.1);"><div style="padding:18px;background:var(--dark);color:#D9E2D7;"><div class="row-split" style="margin-bottom:12px;"><span style="font-weight:600;font-size:14px;color:#fff;">Connection</span><span class="label" style="color:var(--ochre)">● Offline</span></div><div class="label" style="color:#9FB0A4;margin-bottom:6px;">12 grades entered · saved locally</div><div class="label" style="color:#9FB0A4;">Queued to sync on reconnect</div><div style="margin-top:12px;background:rgba(91,158,107,0.18);color:#8FD3A1;border-radius:8px;padding:9px 12px;font-size:12px;">✓ Signal back, syncing now</div></div></div></div>
+    </div>
+    <div class="feat" style="flex-direction:row-reverse;">
+      <div class="txt reveal">
+        <div class="label" style="color:var(--maroon)">Teacher-controlled visibility</div>
+        <div style="display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:11px;color:#7A6418;background:#EDE3C9;padding:4px 10px;border-radius:5px;margin-top:9px;">↳ Transparency, on the teacher's terms</div>
+        <h3 style="font-size:28px;margin:10px 0 12px;">Record every grade, reveal it when it's ready</h3>
+        <p style="font-size:16px;color:#56513F;margin-bottom:14px;">Transparency is the default, but the teacher stays in control. A grade is saved the moment it's entered, visible to the teacher and the school, while a single switch decides when a parent sees it. Hold back an early diagnostic or a first low score, review it, then post to parents with one tap. Nothing is hidden from the record; only the timing of what families see.</p>
+        <div class="label">✓ Record now, post to parents later &nbsp; ✓ No panic over early diagnostics</div>
+      </div>
+      <div class="viz reveal d1"><div class="frame" style="box-shadow:0 16px 40px rgba(30,30,25,0.1);"><div style="padding:16px;background:var(--paper);">
+        <div class="label" style="margin-bottom:10px;">Diagnostic quiz · saved to record</div>
+        <div class="panel" style="display:flex;justify-content:space-between;align-items:center;padding:11px 13px;margin-bottom:10px;border-color:#E6CDD2;"><div><div style="font-weight:600;font-size:13px;">Dela Cruz, J.</div><div class="label">Visible to you &amp; admin</div></div><span class="gradepill g-rose">62</span></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:#fff;border:1px solid var(--border);border-radius:10px;padding:11px 13px;"><span style="font-size:13px;font-weight:500;">Visible to parents</span><span style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;color:var(--muted);"><span style="width:36px;height:20px;border-radius:999px;background:#D6D1C2;position:relative;display:inline-block;"><span style="position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;"></span></span>OFF</span></div>
+        <div class="label" style="margin-top:11px;color:var(--green);">Post to parents when ready →</div>
+      </div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- INTEGRATION -->
+<section id="integration" style="background:var(--dark);color:#D9E2D7;">
+  <div class="wrap" style="padding:84px 32px;display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start;">
+    <div class="reveal" style="flex:999 1 400px;min-width:0;">
+      <div class="label" style="color:#C9A33E;">How it fits your school</div>
+      <h2 style="font-size:40px;line-height:1.05;letter-spacing:-0.018em;color:#fff;margin:12px 0 26px;">It works the way your school already works.</h2>
+      <div style="border-top:1px solid #2C3A30;padding:18px 0;"><h3 style="font-size:19px;color:#fff;margin-bottom:6px;">One login, not several</h3><p style="font-size:15px;color:#9FB0A4;">Grades, attendance, parent updates and report cards sit behind a single sign-in, in place of the daily shuffle between the portal, Teams, and spreadsheets.</p></div>
+      <div style="border-top:1px solid #2C3A30;padding:18px 0;"><h3 style="font-size:19px;color:#fff;margin-bottom:6px;">Configured to your grading system</h3><p style="font-size:15px;color:#9FB0A4;">Grading periods and weightings, written 40 · performance 40 · quarterly 20, set per school, aligned to the revised DepEd system with its 75-and-up descriptors.</p></div>
+      <div style="border-top:1px solid #2C3A30;padding:18px 0;"><h3 style="font-size:19px;color:#fff;margin-bottom:6px;">Role-based access for everyone</h3><p style="font-size:15px;color:#9FB0A4;">Separate portals for admins, teachers, students, and parents. Coordinators and assistant principals cross-check gradebooks; parent access across all levels.</p></div>
+      <div style="border-top:1px solid #2C3A30;border-bottom:1px solid #2C3A30;padding:18px 0;"><h3 style="font-size:19px;color:#fff;margin-bottom:6px;">Hands-on onboarding</h3><p style="font-size:15px;color:#9FB0A4;">We set KlaseLog up with your staff and train teachers directly, including those who aren't comfortable with technology. Ease of use is the first priority.</p></div>
+    </div>
+    <div style="flex:1 1 300px;min-width:0;">
+      <div class="panel" style="background:var(--dark2);border-color:#2C3A30;padding:22px;">
+        <div class="label" style="color:#8FA093;margin-bottom:14px;">School setup</div>
+        <div class="label" style="color:#8FA093;">Grading period</div><div style="background:var(--dark);border:1px solid #2C3A30;border-radius:8px;padding:9px 12px;font-size:14px;color:#EAF0E8;margin:5px 0 14px;">Quarterly ▾</div>
+        <div class="label" style="color:#8FA093;">Science weighting</div><div style="background:var(--dark);border:1px solid #2C3A30;border-radius:8px;padding:9px 12px;font-size:14px;color:#EAF0E8;margin:5px 0 14px;">40 · 40 · 20</div>
+        <div class="label" style="color:#8FA093;">Passing descriptor</div><div style="background:var(--dark);border:1px solid #2C3A30;border-radius:8px;padding:9px 12px;font-size:14px;color:#EAF0E8;margin:5px 0 16px;">75 and up (DepEd)</div>
+        <div style="display:flex;gap:22px;"><div><div class="label" style="color:#8FA093;">Data</div><div style="font-size:14px;color:#fff;">You own it</div></div><div><div class="label" style="color:#8FA093;">Support</div><div style="font-size:14px;color:#fff;">Local Cebu team</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DATA PROTECTION -->
+<section id="security" style="background:var(--maroon);color:#F3E7E9;">
+  <div class="wrap" style="padding:90px 32px;">
+    <div class="reveal" style="max-width:740px;">
+      <div class="label" style="color:#E6C48C;">Data protection</div>
+      <h2 style="font-size:42px;line-height:1.05;letter-spacing:-0.018em;color:#fff;margin:12px 0 14px;">Your students' records, guarded like the school's own files.</h2>
+      <p style="font-size:18px;color:#ECD2D6;max-width:620px;">For a school, nothing matters more than keeping family data safe. KlaseLog is built around that from the first line of code, not bolted on afterward.</p>
+    </div>
+    <div class="reveal d1" style="display:flex;flex-wrap:wrap;gap:18px;margin-top:40px;">
+      <div style="flex:1 1 210px;min-width:0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:13px;padding:22px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-bottom:12px;"><path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z" stroke="#E6C48C" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" stroke="#E6C48C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <h3 style="font-size:17px;color:#fff;margin-bottom:7px;">Strict role-based access</h3>
+        <p style="font-size:13.5px;color:#E7CDD2;line-height:1.5;">Every record sits behind permissions. Teachers, coordinators, admins and parents each see only what they should, never more.</p>
+      </div>
+      <div style="flex:1 1 210px;min-width:0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:13px;padding:22px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-bottom:12px;"><rect x="4" y="10" width="16" height="10" rx="2" stroke="#E6C48C" stroke-width="1.6"/><path d="M8 10V7a4 4 0 018 0v3" stroke="#E6C48C" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3 style="font-size:17px;color:#fff;margin-bottom:7px;">The school owns its data</h3>
+        <p style="font-size:13.5px;color:#E7CDD2;line-height:1.5;">Your records stay yours, exportable anytime. Never sold, never shared, and never used to train anything.</p>
+      </div>
+      <div style="flex:1 1 210px;min-width:0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:13px;padding:22px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-bottom:12px;"><path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z" stroke="#E6C48C" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 8v4" stroke="#E6C48C" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="15" r="0.9" fill="#E6C48C"/></svg>
+        <h3 style="font-size:17px;color:#fff;margin-bottom:7px;">Protected against loss &amp; leaks</h3>
+        <p style="font-size:13.5px;color:#E7CDD2;line-height:1.5;">Encrypted storage and offline-safe records, with safeguards built specifically to prevent leaks and data loss.</p>
+      </div>
+      <div style="flex:1 1 210px;min-width:0;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.14);border-radius:13px;padding:22px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-bottom:12px;"><path d="M12 3l7 3v5c0 4.5-3 7.6-7 9-4-1.4-7-4.5-7-9V6l7-3z" stroke="#E6C48C" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <h3 style="font-size:17px;color:#fff;margin-bottom:7px;">Philippine Data Privacy Act</h3>
+        <p style="font-size:13.5px;color:#E7CDD2;line-height:1.5;">Designed around RA 10173 and reviewed with privacy counsel, compliance your board can stand behind.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="sec">
+  <div class="wrap">
+    <div class="reveal" style="max-width:760px;">
+      <div class="label eyebrow">About us</div>
+      <h2 style="font-size:42px;line-height:1.05;letter-spacing:-0.018em;margin:12px 0 16px;">Built from inside the classroom, not a boardroom.</h2>
+      <p style="font-size:18px;color:#56513F;margin-bottom:44px;">KlaseLog started with a simple observation in Cebu: the schools working hardest to keep parents informed were buried in the most manual work. One of us lived that system as a student; the other builds the technology. Together we're making grade transparency something a school can switch on, without the overhead.</p>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:20px;">
+      <div class="panel" style="flex:1 1 320px;min-width:0;padding:28px;">
+        <div class="ava" style="width:56px;height:56px;background:var(--dark);color:#B6C6B9;font-family:var(--font-heading);font-size:20px;border-radius:50%;margin-bottom:16px;">TY</div>
+        <h3 style="font-size:21px;">Tristan Ybanez</h3>
+        <div class="label" style="color:var(--maroon);margin:4px 0 12px;">Co-founder · Business &amp; Partnerships</div>
+        <p style="font-size:15px;color:#56513F;margin-bottom:16px;">An Ateneo de Cebu alumnus who saw the grade-communication gap from inside the Philippine system. Leads school relationships, onboarding, and the local team.</p>
+        <a href="https://www.linkedin.com/in/tristan-ybanez/" style="font-weight:600;font-size:14px;">Connect on LinkedIn →</a>
+      </div>
+      <div class="panel" style="flex:1 1 320px;min-width:0;padding:28px;">
+        <div class="ava" style="width:56px;height:56px;background:var(--dark);color:#B6C6B9;font-family:var(--font-heading);font-size:20px;border-radius:50%;margin-bottom:16px;">BA</div>
+        <h3 style="font-size:21px;">Bryce Acuna</h3>
+        <div class="label" style="color:var(--maroon);margin:4px 0 12px;">Co-founder · Technical Lead</div>
+        <p style="font-size:15px;color:#56513F;margin-bottom:16px;">A Computer Engineering student building the KlaseLog platform end to end, from the offline-first grade engine to the parent and teacher portals.</p>
+        <a href="https://www.linkedin.com/in/bryce-acuna" style="font-weight:600;font-size:14px;">Connect on LinkedIn →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO REQUEST FORM -->
+<section id="contact" class="sec" style="background:var(--paper2);">
+  <div class="wrap" style="display:flex;flex-wrap:wrap;gap:56px;align-items:flex-start;">
+    <div class="reveal" style="flex:1 1 360px;min-width:0;">
+      <div class="label eyebrow">Request a demo</div>
+      <h2 style="font-size:42px;line-height:1.05;letter-spacing:-0.018em;margin:12px 0 16px;">Bring grade transparency to your school.</h2>
+      <p style="font-size:18px;color:#56513F;max-width:460px;">Tell us a little about your school and we'll set up a walkthrough with your administration and board, tailored to how you grade.</p>
+      <div class="label" style="margin-top:24px;">Prefer email? <a href="mailto:bryce@klaselog.com">bryce@klaselog.com</a> · <a href="mailto:tristan@klaselog.com">tristan@klaselog.com</a></div>
+    </div>
+    <div class="reveal d1" style="flex:1 1 440px;min-width:0;">
+      <form id="demoForm" class="dform" action="[YOUR_FORM_ENDPOINT]" method="POST">
+        <div><label for="f-name">Your name</label><input id="f-name" name="name" type="text" autocomplete="name" required></div>
+        <div><label for="f-role">Role</label><select id="f-role" name="role"><option>Principal / Head</option><option>Administrator</option><option>Board member</option><option>Subject coordinator</option><option>Teacher</option><option>Other</option></select></div>
+        <div class="full"><label for="f-school">School</label><input id="f-school" name="school" type="text" required></div>
+        <div><label for="f-email">Email</label><input id="f-email" name="email" type="email" autocomplete="email" required></div>
+        <div><label for="f-phone">Phone (optional)</label><input id="f-phone" name="phone" type="tel"></div>
+        <div class="full"><label for="f-msg">Anything you'd like us to know?</label><textarea id="f-msg" name="message"></textarea></div>
+        <div class="full" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;"><button type="submit" class="btn btn-maroon">Request a demo</button><span id="formNote" class="label" style="color:var(--green);"></span></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / FOOTER -->
+<footer>
+  <div class="wrap footgrid">
+    <div style="flex:1 1 420px;min-width:0;">
+      <h2 style="font-size:30px;color:#fff;margin-bottom:12px;">Ready when you are.</h2>
+      <p style="font-size:17px;color:#9FB0A4;max-width:460px;margin-bottom:22px;">We'd welcome the chance to walk your administration and board through KlaseLog.</p>
+      <a href="#contact" class="btn btn-maroon cta">Request a demo</a>
+    </div>
+    <div style="flex:1 1 240px;min-width:0;">
+      <div class="label" style="color:#8FA093;margin-bottom:12px;">Get in touch</div>
+      <a href="mailto:bryce@klaselog.com" style="color:#EAF0E8;font-size:15px;display:block;margin-bottom:8px;">bryce@klaselog.com</a>
+      <a href="mailto:tristan@klaselog.com" style="color:#EAF0E8;font-size:15px;display:block;margin-bottom:12px;">tristan@klaselog.com</a>
+      <div style="display:flex;gap:16px;"><a href="https://www.linkedin.com/in/tristan-ybanez/" style="color:#9FB0A4;font-size:14px;">Tristan · LinkedIn</a><a href="https://www.linkedin.com/in/bryce-acuna" style="color:#9FB0A4;font-size:14px;">Bryce · LinkedIn</a></div>
+    </div>
+  </div>
+  <div class="wrap"><div class="foot-bottom"><span>© 2026 KlaseLog · Built for Philippine private schools</span><span>klaselog, clear records, every class</span></div></div>
+</footer>
+
+<script>
+  var current = 'dashboard';
+  var role = 'teacher';
+  var ADDR = {
+    dashboard:'app.klaselog.com/teacher', grades:'app.klaselog.com/teacher/grades',
+    attendance:'app.klaselog.com/teacher/attendance', students:'app.klaselog.com/teacher/students',
+    reports:'app.klaselog.com/teacher/reports',
+    overview:'app.klaselog.com/parent/miguel', pgrades:'app.klaselog.com/parent/grades', pattend:'app.klaselog.com/parent/attendance',
+    soverview:'app.klaselog.com/student', sgrades:'app.klaselog.com/student/grades', whatif:'app.klaselog.com/student/what-if'
+  };
+  var RAILS = {
+    teacher:[['dashboard','Dashboard','stats'],['grades','Gradebook','table'],['attendance','Attendance','list'],['students','Students','list'],['reports','Reports','bars']],
+    parent:[['overview','Overview','stats'],['pgrades','Grades','table'],['pattend','Attendance','list']],
+    student:[['soverview','Overview','stats'],['sgrades','Grades','table'],['whatif','What-if','num']]
+  };
+  function mini(t){
+    if(t==='table') return '<div class="mini"><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar" style="width:55%"></div></div>';
+    if(t==='list') return '<div class="mini"><div class="lr"><span class="dot"></span><span class="ln"></span></div><div class="lr"><span class="dot"></span><span class="ln"></span></div><div class="lr"><span class="dot"></span><span class="ln" style="flex:.7"></span></div></div>';
+    if(t==='bars') return '<div class="mini"><div class="bars"><i style="height:45%"></i><i style="height:80%"></i><i style="height:60%"></i><i style="height:95%"></i></div></div>';
+    if(t==='num') return '<div class="mini"><div class="nbox"></div><div class="bar"></div><div class="bar" style="width:60%"></div></div>';
+    return '<div class="mini"><div class="row"><span class="cell m"></span><span class="cell"></span><span class="cell"></span></div><div class="bar"></div><div class="bar" style="width:70%"></div></div>';
+  }
+  function renderRail(){
+    var list = RAILS[role], html = '';
+    for(var i=0;i<list.length;i++){
+      var s = list[i];
+      html += '<button type="button" class="thumb'+(s[0]===current?' on':'')+'" data-scr="'+s[0]+'" onclick="go(\''+s[0]+'\')" aria-label="'+s[1]+'"><div class="tcap"><span></span><span></span><span></span></div>'+mini(s[2])+'<div class="tname">'+s[1]+'</div></button>';
+    }
+    document.getElementById('rail').innerHTML = html;
+  }
+  function applyScreen(scr){
+    var cur = document.getElementById('s-'+current);
+    if(cur) cur.classList.remove('on');
+    var next = document.getElementById('s-'+scr);
+    if(next) next.classList.add('on');
+    current = scr;
+    var navId = (role==='teacher')?'teachernav':(role==='parent')?'parentnav':'studentnav';
+    var btns = document.querySelectorAll('#'+navId+' button');
+    for(var i=0;i<btns.length;i++){ btns[i].classList.toggle('on', btns[i].getAttribute('data-scr')===scr); }
+    var ths = document.querySelectorAll('#rail .thumb');
+    for(var j=0;j<ths.length;j++){ ths[j].classList.toggle('on', ths[j].getAttribute('data-scr')===scr); }
+    document.getElementById('addr').textContent = ADDR[scr] || 'app.klaselog.com';
+  }
+  var autoTimer = null, autoOn = true;
+  function startAuto(){ if(autoTimer) clearInterval(autoTimer); if(!autoOn) return; autoTimer = setInterval(function(){ var list = RAILS[role], ids = []; for(var k=0;k<list.length;k++) ids.push(list[k][0]); var i = ids.indexOf(current); applyScreen(ids[(i+1)%ids.length]); }, 3600); }
+  function stopAuto(){ autoOn = false; if(autoTimer){ clearInterval(autoTimer); autoTimer = null; } }
+  function go(scr){ stopAuto(); applyScreen(scr); }
+  function setRole(r){
+    stopAuto();
+    role = r;
+    var rb = document.querySelectorAll('.roleswitch button');
+    for(var i=0;i<rb.length;i++){ rb[i].classList.toggle('on', rb[i].getAttribute('data-role')===r); }
+    document.getElementById('teachernav').style.display = (r==='teacher')?'flex':'none';
+    document.getElementById('parentnav').style.display = (r==='parent')?'flex':'none';
+    document.getElementById('studentnav').style.display = (r==='student')?'flex':'none';
+    var def = 'dashboard';
+    if(r==='teacher'){
+      document.getElementById('uname').textContent='Ms. Reyes'; document.getElementById('urole').textContent='Adviser · Math'; document.getElementById('uav').textContent='MR';
+      document.getElementById('apptag').textContent='Student Records';
+      document.getElementById('classsel').style.visibility='visible';
+      def = 'dashboard';
+    } else if(r==='parent'){
+      document.getElementById('uname').textContent='Mrs. Santos'; document.getElementById('urole').textContent='Parent · Guardian'; document.getElementById('uav').textContent='MS';
+      document.getElementById('apptag').textContent='Parent Portal';
+      document.getElementById('classsel').style.visibility='hidden';
+      def = 'overview';
+    } else {
+      document.getElementById('uname').textContent='Miguel Santos'; document.getElementById('urole').textContent='Student · Grade 8'; document.getElementById('uav').textContent='MS';
+      document.getElementById('apptag').textContent='Student Portal';
+      document.getElementById('classsel').style.visibility='hidden';
+      def = 'soverview';
+    }
+    renderRail();
+    applyScreen(def);
+  }
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){ autoOn = false; }
+  renderRail();
+  startAuto();
+</script>
+<script>
+  (function(){
+    if(!('IntersectionObserver' in window)){document.querySelectorAll('.reveal').forEach(function(el){el.classList.add('is-in');});return;}
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('is-in');io.unobserve(e.target);}});},{threshold:0.12,rootMargin:'0px 0px -6% 0px'});
+    function init(){document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});}
+    if(document.readyState!=='loading')init();else document.addEventListener('DOMContentLoaded',init);
+  })();
+</script>
+<script>
+  (function(){
+    var m = document.getElementById('herocar');
+    if(!m) return;
+    function buildCards(){
+      var cards = m.querySelectorAll('.mcard[data-scr]');
+      for(var c=0;c<cards.length;c++){
+        var card = cards[c], scr = card.getAttribute('data-scr'), addr = card.getAttribute('data-addr');
+        var src = document.getElementById('s-'+scr); if(!src) continue;
+        var clone = src.cloneNode(true); clone.removeAttribute('id');
+        card.innerHTML = '<div class="mshot"><div class="mshot-inner"></div></div>';
+        card.querySelector('.mshot-inner').appendChild(clone);
+      }
+    }
+    function scaleShots(){
+      var shots = m.querySelectorAll('.mshot');
+      for(var i=0;i<shots.length;i++){
+        var inner = shots[i].querySelector('.mshot-inner');
+        if(inner) inner.style.transform = 'scale(' + (shots[i].clientWidth / 940) + ')';
+      }
+    }
+    buildCards();
+    m.insertAdjacentHTML('beforeend', m.innerHTML);
+    scaleShots();
+    var half = 0;
+    function measure(){ half = m.scrollWidth / 2; }
+    measure(); window.addEventListener('resize', function(){ scaleShots(); measure(); });
+    var isDown=false, startX=0, startScroll=0, paused=false;
+    m.addEventListener('pointerdown', function(e){ isDown=true; startX=e.clientX; startScroll=m.scrollLeft; m.classList.add('drag'); try{m.setPointerCapture(e.pointerId);}catch(_){} });
+    m.addEventListener('pointermove', function(e){ if(!isDown) return; m.scrollLeft = startScroll - (e.clientX - startX); });
+    function up(){ isDown=false; m.classList.remove('drag'); }
+    m.addEventListener('pointerup', up);
+    m.addEventListener('pointercancel', up);
+    m.addEventListener('mouseenter', function(){ paused=true; });
+    m.addEventListener('mouseleave', function(){ paused=false; isDown=false; m.classList.remove('drag'); });
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function updateFades(){
+      var cr = m.getBoundingClientRect(), cx = cr.left + cr.width/2, cards = m.children;
+      for(var i=0;i<cards.length;i++){
+        var r = cards[i].getBoundingClientRect();
+        var unit = r.width + 16;
+        var dist = Math.abs((r.left + r.width/2) - cx) / unit;
+        var op = 1 - dist * 0.78;
+        if(op > 1) op = 1; if(op < 0) op = 0;
+        var sc = 1 - Math.min(dist, 1.5) * 0.1;
+        cards[i].style.opacity = op.toFixed(3);
+        cards[i].style.transform = 'scale(' + sc.toFixed(3) + ')';
+      }
+    }
+    function tick(){
+      if(!isDown && !paused && half){
+        m.scrollLeft += 0.55;
+        if(m.scrollLeft >= half){ m.scrollLeft -= half; }
+        else if(m.scrollLeft < 0){ m.scrollLeft += half; }
+      }
+      updateFades();
+      requestAnimationFrame(tick);
+    }
+    updateFades();
+    window.addEventListener('resize', updateFades);
+    m.addEventListener('scroll', updateFades);
+    if(!reduce) requestAnimationFrame(tick);
+  })();
+</script>
+<script>
+  (function(){
+    var form = document.getElementById('demoForm');
+    if(!form) return;
+    form.addEventListener('submit', function(e){
+      var action = form.getAttribute('action') || '';
+      if(action.indexOf('[') !== -1 || action === ''){
+        e.preventDefault();
+        var fd = new FormData(form), lines = [];
+        fd.forEach(function(v,k){ lines.push(k + ': ' + v); });
+        var note = document.getElementById('formNote');
+        if(note) note.textContent = 'Opening your email to send…';
+        window.location.href = 'mailto:bryce@klaselog.com,tristan@klaselog.com?subject=' + encodeURIComponent('KlaseLog demo request') + '&body=' + encodeURIComponent(lines.join('\n'));
+      }
+    });
+  })();
+</script>
+</body>
+</html>
